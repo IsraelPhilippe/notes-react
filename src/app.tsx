@@ -1,37 +1,36 @@
-import { ChangeEvent, useState } from 'react';
-import logo from './assets/logo-nlw-expert.svg';
-import { NewNoteCard } from './components/new-note-card';
-import { NoteCard } from './components/note-card';
+import { ChangeEvent, useState } from "react";
+import logo from "./assets/logo-nlw-expert.svg";
+import { NewNoteCard } from "./components/new-note-card";
+import { NoteCard } from "./components/note-card";
 
 interface Note {
-  id: string
-  date: Date
-  content: string
+  id: string;
+  date: Date;
+  content: string;
 }
 
 export function App() {
-    const [search, setSearch] = useState('')
+  const [search, setSearch] = useState("");
+  const [notes, setNotes] = useState<Note[]>(() => {
+    const notesOnStorage = localStorage.getItem("notes");
 
-    const [notes, setNotes] = useState<Note[]>(() => {
-      const notesOnStorage = localStorage.getItem('notes')
+    if (notesOnStorage) {
+      return JSON.parse(notesOnStorage);
+    }
 
-      if (notesOnStorage) {
-        return JSON.parse(notesOnStorage)
-      }
-      
-      return []
-    })
+    return [];
+  });
 
-    function onNoteCreated(content: String) {
-      const newNote = {
-        id: crypto.randomUUID(),
-        date: new Date(),
-        content, 
-      }
-      
-      const notesArray = [newNote, ...notes]
+  function onNoteCreated(content: string) {
+    const newNote = {
+      id: crypto.randomUUID(),
+      date: new Date(),
+      content,
+    };
 
-      setNotes(notesArray)
+    const notesArray = [newNote, ...notes];
+
+    setNotes(notesArray);
     
       localStorage.setItem('notes', JSON.stringify(notesArray))
     }
